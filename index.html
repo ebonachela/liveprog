@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>enigma</title>
+    <style>
+    </style>
+  </head>
+	<script src="/socket.io/socket.io.js"></script>
+  <script src="jquery-3.5.1.min.js"></script>
+	<script>
+	  var socket = io();
+	  
+	  socket.on('teste', function(msg) {
+      console.log(msg);
+
+      document.getElementById("questao").innerHTML = msg;
+	  });
+
+    socket.on('updateRank', function(msg) {
+
+      // Ordenando o rank
+      msg = msg.sort(function(a, b) {
+        return b[1] - a[1];
+      });
+
+      console.log('Atualizando o rank...', msg);
+      makeTableHTML(msg);
+	  });
+
+    function makeTableHTML(myArray) {
+        var result = "<table border=1 style='margin-left: auto; margin-right: auto;'>";
+        for(var i=0; i<myArray.length; i++) {
+            result += "<tr>";
+            for(var j=0; j<myArray[i].length; j++){
+                result += "<td>"+myArray[i][j]+"</td>";
+            }
+            result += "</tr>";
+        }
+        result += "</table>";
+
+        document.getElementById("rank").innerHTML = result;
+    }
+
+    var arr = [];
+
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      makeTableHTML(arr);
+    });
+
+    /*
+    function flashtext(ele,col) {
+      var tmpColCheck = document.getElementById( ele ).style.backgroundColor;
+
+      if (tmpColCheck === 'crimson') {
+        document.getElementById( ele ).style.backgroundColor = col;
+        return false;
+      } else {
+        document.getElementById( ele ).style.backgroundColor = 'crimson';
+        return true;
+      }
+    }
+    setInterval(function() {
+      for (let i = 1; i <= 2; i++) {
+        setTimeout(function timer() {
+          flashtext("level3","black");
+        }, i * 100);
+      }
+    }, 5000);
+    */
+	</script>
+  
+  <body>
+    <div id="problema" style="
+        display: flex;
+        visibility:visible;
+        position: relative;
+        background-color: rgb(245, 245, 245);
+        width: 1000px;
+        height: 500px;
+    ">
+
+      <div id="questao-box">
+        <div id="questao" style="flex: 50%;">
+          <h1 id="title" style="padding-left: 20px;">Palindrome</h1>
+          
+          <div id="text" style="margin-left: 20px;">
+            <p>Given an integer x, print true if x is palindrome and false otherwise.</p>  
+          </div>
+
+          <h2 style="padding-left: 20px;">Input</h2>
+          <div id="input" style="background-color: rgb(240, 233, 233); margin-left: 20px; width: 500px;">
+            <p style="padding: 7px;">
+              3</br>
+              1</br>
+              121</br>
+              4541</br>
+            </p>
+          </div>
+
+          <h2 style="padding-left: 20px;">Output</h2>
+          <div id="output" style="background-color: rgb(240, 233, 233); margin-left: 20px; width: 500px;">
+            <p style="padding: 7px;">
+              true</br>
+              true</br>
+              false</br>
+            </p>
+          </div>
+        </div>
+
+        <div id="help" style="margin-left: 20px;">
+          <p>Send your code to pastebin and use in chat &quot;!run &lt;pastebinurl&gt; &lt;language&gt;&quot;</p>
+          <p>Languages: c, c++, python, java</p>
+        </div>
+      </div>
+      
+      
+      <div style="flex: 50%; padding: 0px;">
+        <h1 style="text-align: center;">Rank</h1>
+        <div id="rank" style="display: flex;">
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
